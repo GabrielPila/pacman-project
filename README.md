@@ -5,7 +5,7 @@
 
 ![pacman_game](img/pacman_game.png "Pacman Game")
 
-This project is part of the Diploma of Development of Applications with Artificial Intelligence. 
+This project is part of the [Diploma of Development of Applications with Artificial Intelligence](https://educacioncontinua.pucp.edu.pe/diplomatura/diplomatura-de-especializacion-en-desarrollo-de-aplicaciones-con-inteligencia-artificial). 
 
 The activity requested to students was to develop and implement a machine learning model to define the movement of the pacman agent. 
 
