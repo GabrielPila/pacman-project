@@ -68,8 +68,17 @@ class my_ML_Agent(Agent):
         features = obtenerFeatures(state).reshape(1,-1)
 
         #Si es un DecisionTreeClassifier
-        accionNum = self.modelo.predict(features)
-        return Directions.STOP
+        accionNum = int(self.modelo.predict(features))
+        directions = list(Directions.LEFT)
+        accionStr = directions[accionNum]
+        legal_actions = state.getLegalActions()
+        
+        if accionStr in legal_actions:
+            action = accionStr 
+        else:
+            action = random.choice(legal_actions)
+        
+        return action # Directions.STOP
         #Si es un keras sequential
         #accionNum = self.modelo.predict(features).argmax(axis=-1)
 
