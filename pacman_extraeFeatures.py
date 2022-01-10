@@ -301,8 +301,10 @@ class ClassicGameRules:
         """
         if state.isWin():
             self.win(state, game)
+            return 'Win'
         if state.isLose():
             self.lose(state, game)
+            return 'Lose'
 
     def win(self, state, game):
         if not self.quiet:
@@ -621,8 +623,9 @@ def readCommand(argv):
         finally:
             f.close()
         recorded['display'] = args['display']
-        replayGame(**recorded)
+        result = replayGame(**recorded)
         #sys.exit(0)
+        args['result'] = result
 
     return args
 
@@ -879,11 +882,12 @@ def replayGame(layout, actions, display):
         # Change the display
         display.update(state.data)
         # Allow for game specific conditions (winning, losing, etc.)
-        rules.process(state, game)
+        result = rules.process(state, game)
 
     matrizDatos = np.delete(matrizDatos, (0), axis=0)
     np.savetxt(ficheroRunActual, matrizDatos, delimiter=',', fmt='%f')
     display.finish()
+    return result
 
 def runGames(layout, pacman, ghosts, display, numGames, record, numTraining=0, catchExceptions=False, timeout=30):
     import __main__
@@ -970,18 +974,24 @@ if __name__ == '__main__':
         print("")
         print("Game number:", gameNumber+1)
 
-        args = readCommand([ comando ])#[ comandos[0] ]
-        data_actual = np.genfromtxt(ficheroRunActual, delimiter=',')#np.loadtxt
-        #ficheroRunAcumul debe tener de antemano dos filas como minimo
-        data_acumul = np.genfromtxt(ficheroRunsTotal, delimiter=',')
-        data_acumul = np.append(data_acumul,data_actual, axis=0)
-        np.savetxt(ficheroRunsTotal, data_acumul, delimiter=',', fmt='%f')
+        print(comando)
+
+        args = readCommand([ comando ])#[ comandos[0]]
+
+        # I have done some adjustments to only consider the Games where Pacman won.
+        # Some students saved their loses, and we prefer to ignore them to have a better model.
+        if args['result'] == 'Win':
+            data_actual = np.genfromtxt(ficheroRunActual, delimiter=',')#np.loadtxt
+            #ficheroRunAcumul debe tener de antemano dos filas como minimo            
+            data_acumul = np.genfromtxt(ficheroRunsTotal, delimiter=',')
+            data_acumul = np.append(data_acumul,data_actual, axis=0)
+            np.savetxt(ficheroRunsTotal, data_acumul, delimiter=',', fmt='%f')
 
         #runGames(**args)
 
-    matrizDatosTotal = np.genfromtxt(ficheroRunsTotal, delimiter=',')
-    matrizDatosTotal = np.delete(matrizDatosTotal, (0,1), axis=0)
-    np.savetxt(ficheroRunsTotal, matrizDatosTotal, delimiter=',', fmt='%f')
+#    matrizDatosTotal = np.genfromtxt(ficheroRunsTotal, delimiter=',')
+#    matrizDatosTotal = np.delete(matrizDatosTotal, (0,1), axis=0)
+#    np.savetxt(ficheroRunsTotal, matrizDatosTotal, delimiter=',', fmt='%f')
 
     # import cProfile
     # cProfile.run("runGames( **args )")
