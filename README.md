@@ -3,6 +3,8 @@
 - __Original author:__ Daniel Saromo
 - __Student:__ Gabriel Pila
 
+![pacman_game](img/pacman_game.png "Pacman Game")
+
 This project is part of the Diploma of Development of Applications with Artificial Intelligence. 
 
 The activity requested to students was to develop and implement a machine learning model to define the movement of the pacman agent. 
@@ -21,6 +23,9 @@ __Instructions:__
 
 __Files Modified:__
 
-- `iapucp_agents.py`
-- `pacman.py`
-- `pacman_extraeFeatures.py`
+- `iapucp_agents.py`: Implementación de `get_actions`
+- `pacman.py`: Adición de paquetes necesarios
+- `pacman_extraeFeatures.py`: Implementación de filtro de partidas ganadas.
+
+__UPDATE:__
+- Se hizo una mejora al código de procesamiento de Features, de manera que si la partida resultó perdida, no se considerarán los registros de esa partida como parte del dataset de entrenamiento. 
