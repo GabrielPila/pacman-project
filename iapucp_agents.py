@@ -69,7 +69,7 @@ class my_ML_Agent(Agent):
 
         #Si es un DecisionTreeClassifier
         accionNum = int(self.modelo.predict(features))
-        directions = list(Directions.LEFT)
+        directions = ['Stop','East','North','West','South']
         accionStr = directions[accionNum]
         legal_actions = state.getLegalActions()
         
